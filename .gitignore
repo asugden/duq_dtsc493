@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Normally remove .vscode-- will keep for instructions
+# .vscode
+
+# Remove mac .DS_store files
+.DS_store
