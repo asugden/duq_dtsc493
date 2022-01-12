@@ -30,7 +30,7 @@ Evaluation:
 - Set up Github account, add at least one repository with documentation
 - Set up VSCode locally
 
-## Week 2: Jan 17, 19, 21
+## Week 2: Jan 19, 21
 - Pandas
     - All Pandas, all the time
     - Comfort and speed
