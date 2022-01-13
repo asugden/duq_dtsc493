@@ -6,6 +6,17 @@ We will have days that alternate theory with practice. Practice will involve bot
 
 Note that plans will change as we adapt the course to the interests of everyone in the course.
 
+# Code necessities
+I highly recommend using a unix-based system for programming-- either dual-boot a windows machine with Ubuntu or use a Mac. If neither is desirable, then the easiest way to use Python on a Windows machine is using a combination of Anaconda and Git Bash.
+
+To install Git bash: https://git-scm.com/download/win
+
+(Given that Anaconda was used in DS1, I am assuming that you have already installed Anaconda.)
+
+To ensure that you can use Anaconda from within Git Bash, checkout the first answer to this Stack Overflow question: https://stackoverflow.com/questions/54501167/anaconda-and-git-bash-in-windows-conda-command-not-found
+
+It may seem weird that a course syllabus links to Stack Overflow, but you will find that the professional experience of Data Science often involves using Google for solutions. Installing core Unix components is one of the most frustrating tasks in computing, regardless of operating system, but doing so provides excellent experience.
+
 ## Week 1: Jan 12, 15
 - Github
     - Setup
