@@ -42,6 +42,10 @@ Evaluation:
 - Set up VSCode locally
 
 ## Week 2: Jan 19, 21
+Dataset: https://github.com/nytimes/covid-19-data/blob/master/us-counties.csv
+
+Evaluation: https://www.youtube.com/watch?v=_uQrJ0TkZlc through Classes
+
 - Pandas
     - All Pandas, all the time
     - Comfort and speed
