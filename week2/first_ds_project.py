@@ -1,7 +1,9 @@
 # Imports at the top
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.optimize
+import scipy.stats
 from typing import Iterable, List, Tuple
 
 
@@ -17,6 +19,7 @@ def read(path: str) -> pd.DataFrame:
     
     """
     df = pd.read_csv(path)
+    df['date'] = pd.to_datetime(df['date'])
     df['county'] = df['county'].str.lower()
     df['state'] = df['state'].str.lower()
     df['cases'] = df['cases'].diff()
@@ -52,10 +55,20 @@ def subset_county(df: pd.DataFrame,
     else:
         df = df.loc[df['fips'] == fips, :]
 
-    df['date'] = pd.to_datetime(df['date'])
     df = df.loc[df['date'] >= pd.to_datetime(from_date), :]
 
     return df.reset_index(drop=True)
+
+
+def poisson(df):
+    temp = df.loc[df['date'] == pd.to_datetime('2022-01-05'), 'cases'].values
+    hist, bins = np.histogram(temp, 20)
+    temp = temp[(temp > 0) & (temp < 100000)]
+    plt.plot(hist)
+    plt.show()
+    x = (bins[:-1] + bins[1:])/2
+    poisson.pmf(x, 100)
+    
 
 
 def sir(s_init: int, 
@@ -105,11 +118,19 @@ def fit_r0(cases: pd.Series, population: int = 1_250_578) -> Tuple[float]:
     r = 0
     s = population - i - r
     def fit_function(x, r0) -> List[float]:
-        return np.diff([v[1] for v in sir(s, i, r, r0, 10, len(x))])
+        sir_over_time = sir(s, i, r, r0, 10, len(x))
+        i_value_over_time = [v[1] for v in sir_over_time]
+        # Now we have to convert i-values, which are over the total infected period
+        # To case values, which are per day.
+        i_value_per_day = np.diff(i_value_over_time)
+        return i_value_per_day
     
     pars, _ = scipy.optimize.curve_fit(fit_function, np.arange(len(cases)-1), 
         cases[1:].values, p0=[1.1], bounds=[[0.5], [15]])
     return pars[0]
+
+# Census data by FIPS code:
+# https://cmu-delphi.github.io/covidcast/covidcastR/reference/county_census.html
 
 
 # SCRIPT SECTION ==========================
@@ -124,6 +145,22 @@ if __name__ == '__main__':
     # Because \ is a separator and because it's a control character, we need to use
     # \\ for every backslash
     df = read('data/us-counties.txt')
+
+    temp = df.loc[df['date'] == pd.to_datetime('2022-01-05'), 'cases'].values
+    hist = np.histogram(temp, 20)
+    
+
     allegheny = subset_county(df, 'allegheny', 'pennsylvania', '2021-12-26')
     print(allegheny)
     print(fit_r0(allegheny['cases']))
+
+
+
+
+
+
+
+
+
+
+
