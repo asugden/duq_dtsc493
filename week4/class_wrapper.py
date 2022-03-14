@@ -2,12 +2,21 @@
 # Classes group together variables and operations on those variables
 # Keep your classes relatively small
 # Keep them oeprating on linked ideas
-import os.path
+import matplotlib.pyplot as plt
 import numpy as np
+import os.path
 import sklearn.metrics
 import sklearn.tree
 import xgboost as xgb
 import yaml
+
+# import graphviz
+# import matplotlib.pyplot as plt
+# xgb.plotting.plot_importance(booster, ax=ax, height=0.6, importance_type="weight")
+# xgb.plotting.plot_tree(booster, ax=ax, num_trees=9)
+# NO: booster.trees_to_dataframe()
+# self.model.load_config
+
 
 class ClassifierWrapper:
     def __init__(self):
@@ -28,16 +37,25 @@ class ClassifierWrapper:
             self.model = xgb.XGBClassifier()
         self.model.fit(xdata, labels)
 
+    def draw(self, path: str):
+        """If there is an existing model, draw the model and feature importance.
+        """
+        # xgb.plotting.plot_tree(self.model, num_trees=5)
+        xgb.plotting.plot_importance(
+            self.model, height=0.6, importance_type="weight")
+        plt.savefig(path)
+
     def apply(self, xdata: np.ndarray):
         return self.model.predict_proba(xdata)
 
-    def assess(self, 
-               xdata: np.ndarray, 
-               labels: np.ndarray, 
+    def assess(self,
+               xdata: np.ndarray,
+               labels: np.ndarray,
                assessment: str):
         binary_pred = self.model.predict(xdata)
         if assessment == 'percent_correct':
-            correct_points = 1 - np.abs(binary_pred.astype(int) - labels.astype(int))
+            correct_points = 1 - \
+                np.abs(binary_pred.astype(int) - labels.astype(int))
             percent_correct = correct_points.sum()/len(correct_points)
             return percent_correct
         else:

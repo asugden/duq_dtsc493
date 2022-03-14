@@ -10,20 +10,24 @@ if __name__ == '__main__':
     df = pd.read_csv(path, delimiter=';')
     df['good'] = df['quality'] > 5
 
-    features = df.drop(columns=['good', 'quality']).values
-    labels = df['good'].values
+    features = df.drop(columns=['good', 'quality'])
+    labels = df['good']
 
     train_features, test_features, train_labels, test_labels = \
-        sklearn.model_selection.train_test_split(features, labels, test_size=0.3)
+        sklearn.model_selection.train_test_split(
+            features, labels, test_size=0.3)
 
     cw = week4.class_wrapper.ClassifierWrapper()
     cw.train(train_features, train_labels)
-    print(cw.assess(test_features, test_labels, 'percent_correct'))
-    cw.save('data/wine_model.xgb')
 
-    cw = week4.class_wrapper.ClassifierWrapper()
-    cw.train(train_features, train_labels, decision_tree=True)
-    print(cw.assess(test_features, test_labels, 'percent_correct'))
+    cw.draw('/Users/arthur/Desktop/xgboost_features.pdf')
+
+    # print(cw.assess(test_features, test_labels, 'percent_correct'))
+    # cw.save('data/wine_model.xgb')
+
+    # cw = week4.class_wrapper.ClassifierWrapper()
+    # cw.train(train_features, train_labels, decision_tree=True)
+    # print(cw.assess(test_features, test_labels, 'percent_correct'))
     # test_preds = cw.apply(test_features)
     # test_preds = test_preds[:, 1] >= 0.5
 

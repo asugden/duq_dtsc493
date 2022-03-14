@@ -125,7 +125,7 @@ Evaluation:
 
 ## Week 6: Feb 14, 16, 18
 
-## Week 7: Feb 21, 23, 25
+## Week 7: Feb 23, 25
 
 ## Week 8: Feb 28, Mar 2, 4
 
